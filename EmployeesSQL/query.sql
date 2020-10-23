@@ -9,7 +9,6 @@ SELECT first_name, last_name, hire_date
 FROM employees
 WHERE hire_date::date between '1986/01/01' and '1986/12/31'
 
-
 ---QUERY 3---
 SELECT dm.dept_no, d.dept_name, e.emp_no, e.last_name, e.first_name
 FROM dept_manager dm
@@ -31,20 +30,33 @@ SELECT first_name, last_name, sex
 FROM employees
 WHERE first_name='Hercules' AND last_name LIKE 'B%'
 
-SELECT emp_no, last_name, first_name
-FROM employees
-WHERE emp_no IN (
-	SELECT emp_no
-	FROM dept_emp
-	WHERE dept_no IN (
-		SELECT dept_no
-		FROM departments
-		WHERE dept_name= 'Sales'
-		)
-	)
-
-SELECT COUNT(1)
-FROM dept_emp
-
+---QUERY 6---
 SELECT *
-FROM departments
+FROM (
+	SELECT e.emp_no, e.last_name, e.first_name, d.dept_name
+	FROM dept_emp de
+	LEFT JOIN departments d
+	ON de.dept_no=d.dept_no
+	JOIN employees e
+	ON de.emp_no=e.emp_no
+	) as combined
+WHERE combined.dept_name= 'Sales'
+
+---QUERY 7---
+SELECT *
+FROM (
+	SELECT e.emp_no, e.last_name, e.first_name, d.dept_name
+	FROM dept_emp de
+	LEFT JOIN departments d
+	ON de.dept_no=d.dept_no
+	JOIN employees e
+	ON de.emp_no=e.emp_no
+	) as combined
+WHERE combined.dept_name= 'Sales' OR combined.dept_name= 'Development'
+ORDER BY combined.dept_name ASC
+
+---QUERY 8---
+SELECT last_name, COUNT(last_name) AS "Number of Employees"
+FROM employees
+GROUP BY last_name
+ORDER BY UPPER(last_name) DESC
