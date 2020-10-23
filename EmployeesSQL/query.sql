@@ -31,29 +31,23 @@ FROM employees
 WHERE first_name='Hercules' AND last_name LIKE 'B%'
 
 ---QUERY 6---
-SELECT *
-FROM (
-	SELECT e.emp_no, e.last_name, e.first_name, d.dept_name
-	FROM dept_emp de
-	LEFT JOIN departments d
-	ON de.dept_no=d.dept_no
-	JOIN employees e
-	ON de.emp_no=e.emp_no
-	) as combined
-WHERE combined.dept_name= 'Sales'
+SELECT e.emp_no, e.last_name, e.first_name, d.dept_name
+FROM dept_emp de
+LEFT JOIN departments d
+ON de.dept_no=d.dept_no
+JOIN employees e
+ON de.emp_no=e.emp_no
+WHERE d.dept_name= 'Sales'
 
 ---QUERY 7---
-SELECT *
-FROM (
-	SELECT e.emp_no, e.last_name, e.first_name, d.dept_name
-	FROM dept_emp de
-	LEFT JOIN departments d
-	ON de.dept_no=d.dept_no
-	JOIN employees e
-	ON de.emp_no=e.emp_no
-	) as combined
-WHERE combined.dept_name= 'Sales' OR combined.dept_name= 'Development'
-ORDER BY combined.dept_name ASC
+SELECT e.emp_no, e.last_name, e.first_name, d.dept_name
+FROM dept_emp de
+LEFT JOIN departments d
+ON de.dept_no=d.dept_no
+JOIN employees e
+ON de.emp_no=e.emp_no
+WHERE d.dept_name= 'Sales' OR d.dept_name= 'Development'
+ORDER BY d.dept_name ASC
 
 ---QUERY 8---
 SELECT last_name, COUNT(last_name) AS "Number of Employees"
